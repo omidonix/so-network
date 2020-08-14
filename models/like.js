@@ -4,6 +4,7 @@ const {
 } = require('sequelize');
 
 const uppercaseFirst = str => `${str[0].toUpperCase()}${str.substr(1)}`;
+const db = require('./index')
 
 module.exports = (sequelize, DataTypes) => {
   class like extends Model {
@@ -46,6 +47,32 @@ module.exports = (sequelize, DataTypes) => {
       delete instance.post;
       delete instance.dataValues.post;
     }
+  });
+
+
+
+  like.addHook("afterCreate", (instance, options) => {
+    if(instance.likeableType == 'post'){
+      const db = require('./index')
+      db.post.increment('like_count',{
+        where : {
+          id : instance.likeableId
+        }
+      })
+    }
+    
+  });
+
+  like.addHook("afterDestroy", (instance, options) => {
+    if(instance.likeableType == 'post'){
+      const db = require('./index')
+      db.post.decrement('like_count',{
+        where : {
+          id : instance.likeableId
+        }
+      })
+    }
+    
   });
 
 

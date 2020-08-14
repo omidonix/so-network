@@ -49,5 +49,45 @@ module.exports = (sequelize, DataTypes) => {
   });
 
 
+
+  dislike.addHook("afterFind", findResult => {
+    if (!Array.isArray(findResult)) findResult = [findResult];
+    for (const instance of findResult) {
+      if (instance.likeableType === "post" && instance.post !== undefined) {
+        instance.like = instance.post;
+      }
+      // To prevent mistakes:
+      delete instance.post;
+      delete instance.dataValues.post;
+    }
+  });
+
+
+
+  dislike.addHook("afterCreate", (instance, options) => {
+    if(instance.dislikeableType == 'post'){
+      const db = require('./index')
+      db.post.increment('dislike_count',{
+        where : {
+          id : instance.dislikeableId
+        }
+      })
+    }
+    
+  });
+
+  dislike.addHook("afterDestroy", (instance, options) => {
+    if(instance.dislikeableType == 'post'){
+      const db = require('./index')
+      db.post.decrement('dislike_count',{
+        where : {
+          id : instance.dislikeableId
+        }
+      })
+    }
+    
+  });
+
+
   return dislike;
 };

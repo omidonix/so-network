@@ -31,6 +31,23 @@ router.get('/' ,async function(req, res, next) {
   });
 });
 
+// router.get('/' ,  function(req, res, next) {
+//   console.log('start app sync')
+//   setTimeout(()=>{
+//     console.log('end time oute1')
+//   },0)
+//   setTimeout(()=>{
+//     console.log('end time oute2')
+//   },0)
+//   setTimeout(()=>{
+//     console.log('end time oute3')
+//   },1)
+//   fs.readFile(__dirname + '/../package.json',(data)=>{
+//     console.log('file tamome')
+//   })
+//   console.log('end app')
+// });
+
 
 
 

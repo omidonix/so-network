@@ -121,6 +121,7 @@ module.exports.createComment = async function(req,res,next) {
 //toye har do halat a stack darim ke . brtib rushva bade vaghteshiad birun
 module.exports.listComment = async function(req,res,next){
 
+  
   let commanets = await db.comment.findAll({
     where:{
       post_id: req.params.post_id
